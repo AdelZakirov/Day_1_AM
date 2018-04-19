@@ -9,7 +9,10 @@ MAINTAINER Project Everware
 USER root
 
 # For python 3
-RUN conda install --yes numpy scipy scikit-learn matplotlib pandas seaborn lasio tensorflow keras
+RUN conda install --yes numpy scipy scikit-learn matplotlib pandas seaborn 
+RUN pip install tensorflow
+RUN pip install keras
+RUN pip install lasio
 
 USER jupyter
 WORKDIR /home/jupyter/
