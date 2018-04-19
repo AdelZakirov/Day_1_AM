@@ -1,23 +1,20 @@
-FROM nvidia/cuda:8.0-cudnn5-devel
+# A container with scientific python libraries installed
+# Your analysis container should inherit this one with
+# `FROM everware/science-python`
 
-MAINTAINER Michael Wright <mkwright@gmail.com> 
+FROM everware/base
 
-RUN apt-get update && \
-    apt-get install -y curl build-essential libpng12-dev libffi-dev  && \
-    apt-get clean && \
-    rm -rf /var/tmp /tmp /var/lib/apt/lists/*
+MAINTAINER Project Everware
 
-RUN curl -sSL -o installer.sh https://repo.continuum.io/archive/Anaconda3-4.2.0-Linux-x86_64.sh && \
-    bash /installer.sh -b -f && \
-    rm /installer.sh
+USER root
 
-ENV PATH "$PATH:/root/anaconda3/bin"
+# For python 2
+RUN /bin/bash -c "source activate py27 && \
+    conda install --yes numpy scipy scikit-learn matplotlib pandas seaborn"
+# For python 3
+RUN conda install --yes numpy scipy scikit-learn matplotlib pandas seaborn lasio tensorflow keras
 
-EXPOSE 8888 6006
-VOLUME /notebooks
-WORKDIR "/notebooks"
+USER jupyter
+WORKDIR /home/jupyter/
 
-CMD ["jupyter", "notebook", "--port=8888", "--no-browser", "--ip=0.0.0.0"]
-
-ADD environment.yml /environment.yml
-RUN conda env update -f /environment.yml
+EXPOSE 8888
