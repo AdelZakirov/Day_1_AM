@@ -13,6 +13,7 @@ RUN conda install --yes numpy scipy scikit-learn matplotlib pandas seaborn
 RUN pip install tensorflow
 RUN pip install keras
 RUN pip install lasio
+RUN pip install pyqt4
 
 USER jupyter
 WORKDIR /home/jupyter/
